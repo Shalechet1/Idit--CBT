@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>טיפול CBT | ליווי מקצועי ואישי</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple-950: #2a1650;
+    --purple-800: #4a2589;
+    --purple-600: #7b3fe4;
+    --purple-500: #9058ec;
+    --purple-300: #c3a4f7;
+    --purple-100: #f0e8fd;
+    --purple-50: #faf8ff;
+    --ink: #241a35;
+    --gray: #6b6178;
+    --white: #ffffff;
+    --whatsapp: #25d366;
+    --whatsapp-dark: #1da851;
+    --shadow-soft: 0 10px 30px rgba(74,37,137,0.12);
+    --shadow-strong: 0 20px 45px rgba(42,22,80,0.28);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Rubik', 'Segoe UI', Arial, sans-serif;
+    background: var(--white);
+    color: var(--ink);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  img, svg { display: block; max-width: 100%; }
+  a { color: inherit; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in { animation: fadeUp 0.7s ease both; }
+  .fade-in.d1 { animation-delay: .08s; }
+  .fade-in.d2 { animation-delay: .16s; }
+  .fade-in.d3 { animation-delay: .24s; }
+
+  /* NAV */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(74,37,137,0.08);
+    padding: 16px 24px;
+  }
+  .nav-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--purple-800);
+  }
+  .brand .dot {
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--purple-600), var(--purple-800));
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 1rem;
+  }
+  .nav-cta {
+    background: var(--purple-600);
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 10px 20px;
+    border-radius: 999px;
+    box-shadow: var(--shadow-soft);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .nav-cta:hover { transform: translateY(-2px); box-shadow: var(--shadow-strong); }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    background: radial-gradient(circle at 15% 15%, var(--purple-100), var(--purple-50) 55%);
+    padding: 72px 24px 90px;
+    overflow: hidden;
+  }
+  .hero-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 56px;
+    align-items: center;
+  }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--purple-100);
+    color: var(--purple-800);
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 8px 16px;
+    border-radius: 999px;
+    margin-bottom: 20px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--purple-600);
+  }
+  .hero h1 {
+    font-size: 2.6rem;
+    line-height: 1.25;
+    color: var(--purple-950);
+    font-weight: 800;
+    margin-bottom: 18px;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(90deg, var(--purple-600), var(--purple-500));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hero p.lead {
+    font-size: 1.15rem;
+    color: var(--gray);
+    max-width: 480px;
+    margin-bottom: 32px;
+  }
+  .hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 34px;
+  }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--purple-600), var(--purple-800));
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 16px 30px;
+    border-radius: 999px;
+    box-shadow: var(--shadow-strong);
+    transition: transform .15s ease;
+  }
+  .btn-primary:hover { transform: translateY(-3px); }
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--white);
+    color: var(--whatsapp-dark);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1rem;
+    padding: 16px 26px;
+    border-radius: 999px;
+    border: 1.5px solid #cdeedc;
+    transition: transform .15s ease, background .15s ease;
+  }
+  .btn-secondary:hover { transform: translateY(-3px); background: #f2fcf6; }
+
+  .trust-row {
+    display: flex;
+    gap: 28px;
+    flex-wrap: wrap;
+    color: var(--gray);
+    font-size: 0.9rem;
+  }
+  .trust-row span { font-weight: 700; color: var(--purple-800); }
+
+  /* HERO visual card */
+  .hero-visual {
+    position: relative;
+  }
+  .photo-frame {
+    position: relative;
+    border-radius: 28px;
+    background: linear-gradient(160deg, var(--purple-600), var(--purple-950));
+    aspect-ratio: 4/5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-strong);
+    overflow: hidden;
+  }
+  .photo-frame::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 85% 10%, rgba(255,255,255,0.14), transparent 45%),
+      radial-gradient(circle at 10% 90%, rgba(255,255,255,0.10), transparent 40%);
+  }
+  .photo-placeholder {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    color: rgba(255,255,255,0.9);
+    padding: 30px;
+    border: 1.5px dashed rgba(255,255,255,0.45);
+    border-radius: 20px;
+    margin: 24px;
+  }
+  .photo-placeholder .cam {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+  }
+  .photo-placeholder p {
+    font-size: 0.9rem;
+    opacity: 0.85;
+    max-width: 200px;
+  }
+  .floating-badge {
+    position: absolute;
+    bottom: -22px;
+    right: -18px;
+    background: var(--white);
+    border-radius: 18px;
+    padding: 16px 20px;
+    box-shadow: var(--shadow-strong);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    z-index: 2;
+  }
+  .floating-badge .emoji {
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    background: var(--purple-100);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+  }
+  .floating-badge strong {
+    display: block;
+    font-size: 0.92rem;
+    color: var(--purple-950);
+  }
+  .floating-badge span {
+    font-size: 0.78rem;
+    color: var(--gray);
+  }
+  .floating-chip {
+    position: absolute;
+    top: -18px;
+    left: -14px;
+    background: var(--white);
+    border-radius: 14px;
+    padding: 10px 16px;
+    box-shadow: var(--shadow-soft);
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--purple-800);
+    z-index: 2;
+  }
+
+  /* SECTIONS */
+  .section {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 90px 24px;
+  }
+  .section-head {
+    text-align: center;
+    max-width: 620px;
+    margin: 0 auto 48px;
+  }
+  .section-head .eyebrow { margin-bottom: 14px; }
+  .section-head h2 {
+    font-size: 2rem;
+    color: var(--purple-950);
+    font-weight: 800;
+    margin-bottom: 14px;
+  }
+  .section-head p {
+    color: var(--gray);
+    font-size: 1.05rem;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: 56px;
+    align-items: center;
+  }
+  .about-visual {
+    aspect-ratio: 1/1;
+    border-radius: 24px;
+    background: var(--purple-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.5px dashed var(--purple-300);
+  }
+  .about-visual .placeholder-inner {
+    text-align: center;
+    color: var(--purple-800);
+  }
+  .about-visual .placeholder-inner .cam { font-size: 2rem; margin-bottom: 8px; }
+  .about-visual .placeholder-inner p { font-size: 0.85rem; color: var(--gray); max-width: 180px; margin: 0 auto; }
+  .about-text h3 {
+    font-size: 1.5rem;
+    color: var(--purple-950);
+    font-weight: 800;
+    margin-bottom: 16px;
+  }
+  .about-text p {
+    color: var(--gray);
+    font-size: 1.05rem;
+    margin-bottom: 24px;
+  }
+  .credential-list {
+    display: grid;
+    gap: 12px;
+  }
+  .credential-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.95rem;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .credential-item .check {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--purple-100);
+    color: var(--purple-700, var(--purple-600));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+
+  /* HIGHLIGHT CARDS */
+  .highlights {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .highlight-card {
+    background: var(--white);
+    border: 1px solid #ece3fb;
+    border-radius: 20px;
+    padding: 28px 22px;
+    text-align: right;
+    box-shadow: var(--shadow-soft);
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .highlight-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-strong);
+  }
+  .highlight-card .icon {
+    width: 46px; height: 46px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--purple-100), var(--purple-300));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+  }
+  .highlight-card h3 {
+    color: var(--purple-950);
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+  }
+  .highlight-card p {
+    color: var(--gray);
+    font-size: 0.92rem;
+  }
+
+  /* PROCESS */
+  .process {
+    background: var(--purple-50);
+  }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    position: relative;
+  }
+  .step {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 30px 24px;
+    box-shadow: var(--shadow-soft);
+    position: relative;
+  }
+  .step .num {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--purple-600), var(--purple-800));
+    color: var(--white);
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+    font-size: 0.95rem;
+  }
+  .step h3 {
+    color: var(--purple-950);
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+  }
+  .step p {
+    color: var(--gray);
+    font-size: 0.92rem;
+  }
+
+  /* FAQ */
+  .faq-list {
+    display: grid;
+    gap: 12px;
+  }
+  details.faq-item {
+    background: var(--white);
+    border: 1px solid #ece3fb;
+    border-radius: 16px;
+    padding: 4px 22px;
+  }
+  details.faq-item summary {
+    cursor: pointer;
+    padding: 18px 0;
+    font-weight: 600;
+    color: var(--purple-950);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    list-style: none;
+  }
+  details.faq-item summary::-webkit-details-marker { display: none; }
+  details.faq-item summary::after {
+    content: "+";
+    font-size: 1.4rem;
+    color: var(--purple-600);
+    font-weight: 400;
+    transition: transform .2s ease;
+  }
+  details.faq-item[open] summary::after {
+    transform: rotate(45deg);
+  }
+  details.faq-item p {
+    color: var(--gray);
+    font-size: 0.92rem;
+    padding-bottom: 20px;
+    max-width: 640px;
+  }
+
+  /* CTA / FORM */
+  .cta-section {
+    position: relative;
+    background: linear-gradient(150deg, var(--purple-800), var(--purple-950));
+    border-radius: 32px;
+    padding: 56px 32px;
+    text-align: center;
+    overflow: hidden;
+    color: var(--white);
+  }
+  .cta-section::before,
+  .cta-section::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .cta-section::before { width: 280px; height: 280px; top: -100px; right: -80px; }
+  .cta-section::after { width: 200px; height: 200px; bottom: -80px; left: -60px; }
+  .cta-section h2 {
+    position: relative;
+    font-size: 1.7rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+  }
+  .cta-section > p {
+    position: relative;
+    color: rgba(255,255,255,0.78);
+    margin-bottom: 32px;
+  }
+  .cta-panel {
+    position: relative;
+    background: var(--white);
+    border-radius: 22px;
+    padding: 32px;
+    max-width: 440px;
+    margin: 0 auto;
+    box-shadow: var(--shadow-strong);
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  input {
+    padding: 15px 18px;
+    border-radius: 12px;
+    border: 1.5px solid #e6dcfa;
+    font-size: 1rem;
+    font-family: inherit;
+    text-align: right;
+    background: var(--purple-50);
+    color: var(--ink);
+    transition: border-color .15s ease, background .15s ease;
+  }
+  input::placeholder { color: #a89bc0; }
+  input:focus {
+    outline: none;
+    border-color: var(--purple-600);
+    background: var(--white);
+  }
+  button.submit-btn {
+    background: linear-gradient(135deg, var(--purple-600), var(--purple-800));
+    color: var(--white);
+    border: none;
+    padding: 16px 18px;
+    border-radius: 12px;
+    font-size: 1.02rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform .15s ease;
+    font-family: inherit;
+  }
+  button.submit-btn:hover { transform: translateY(-2px); }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 22px 0;
+    color: #a89bc0;
+    font-size: 0.85rem;
+  }
+  .divider::before, .divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #e6dcfa;
+  }
+
+  .whatsapp-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: var(--whatsapp);
+    color: var(--white);
+    text-decoration: none;
+    padding: 16px 18px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    box-shadow: 0 10px 22px rgba(37,211,102,0.35);
+    transition: transform .15s ease;
+  }
+  .whatsapp-btn:hover { transform: translateY(-2px); }
+
+  /* Floating WhatsApp bubble */
+  .float-whatsapp {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    background: var(--whatsapp);
+    color: var(--white);
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    text-decoration: none;
+    box-shadow: 0 10px 26px rgba(0,0,0,0.28);
+    z-index: 50;
+    animation: pulse 2.4s infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 10px 26px rgba(0,0,0,0.28), 0 0 0 0 rgba(37,211,102,0.5); }
+    70% { box-shadow: 0 10px 26px rgba(0,0,0,0.28), 0 0 0 14px rgba(37,211,102,0); }
+    100% { box-shadow: 0 10px 26px rgba(0,0,0,0.28), 0 0 0 0 rgba(37,211,102,0); }
+  }
+
+  footer {
+    text-align: center;
+    padding: 36px 20px 44px;
+    color: var(--gray);
+    font-size: 0.85rem;
+    border-top: 1px solid #f0e8fd;
+  }
+
+  @media (max-width: 860px) {
+    .hero-inner { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 2.1rem; }
+    .about-grid { grid-template-columns: 1fr; }
+    .highlights { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr; }
+    .hero-visual { order: -1; max-width: 340px; margin: 0 auto; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="brand"><span class="dot">🧠</span> טיפול CBT</div>
+    <a href="#contact" class="nav-cta">קביעת ייעוץ</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="fade-in">
+      <div class="eyebrow">ליווי טיפולי אישי · CBT מוסמכת</div>
+      <h1>מרחב בטוח <em>לצמוח</em><br>ולהשתחרר מדפוסים מגבילים</h1>
+      <p class="lead">
+        טיפול CBT מקצועי ואישי, בגישה חמה ומדויקת — כלים מעשיים להתמודדות עם חרדה, דיכאון ומתח,
+        לצד ליווי אנושי לאורך כל הדרך.
+      </p>
+      <div class="hero-ctas">
+        <a href="#contact" class="btn-primary">📅 קביעת פגישת ייעוץ</a>
+        <a href="https://wa.me/972546634113" target="_blank" rel="noopener" class="btn-secondary">💬 וואטסאפ מהיר</a>
+      </div>
+      <div class="trust-row">
+        <div><span>CBT</span> שיטה מבוססת מחקר</div>
+        <div><span>1:1</span> ליווי אישי מלא</div>
+        <div><span>100%</span> סודיות מלאה</div>
+      </div>
+    </div>
+
+    <div class="hero-visual fade-in d1">
+      <div class="floating-chip">🌿 גישה חמה ומקצועית</div>
+      <div class="photo-frame">
+        <div class="photo-placeholder">
+          <div class="cam">📷</div>
+          <p>כאן תתווסף תמונה אישית בהמשך</p>
+        </div>
+      </div>
+      <div class="floating-badge">
+        <div class="emoji">💜</div>
+        <div>
+          <strong>מטפלת CBT מוסמכת</strong>
+          <span>ליווי מבוגרים ובני נוער</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section about" id="about">
+  <div class="about-grid">
+    <div class="about-visual fade-in">
+      <div class="placeholder-inner">
+        <div class="cam">🖼️</div>
+        <p>מקום לתמונה נוספת / לוגו</p>
+      </div>
+    </div>
+    <div class="about-text fade-in d1">
+      <div class="eyebrow">קצת עליי</div>
+      <h3>ליווי טיפולי מקצועי, בגובה העיניים</h3>
+      <p>
+        אני מטפלת CBT מוסמכת, מלווה מטופלים ומטופלות בתהליך טיפולי ממוקד ויעיל להתמודדות עם חרדה, דיכאון, מתח,
+        דפוסי חשיבה מגבילים ואתגרים רגשיים נוספים. הטיפול מתבסס על כלים מעשיים המותאמים אישית לכל מטופל/ת,
+        לצד ליווי אנושי ותומך לאורך כל הדרך.
+      </p>
+      <div class="credential-list">
+        <div class="credential-item"><span class="check">✓</span> גישה קוגניטיבית-התנהגותית (CBT) מוסמכת</div>
+        <div class="credential-item"><span class="check">✓</span> ליווי מבוגרים ובני נוער</div>
+        <div class="credential-item"><span class="check">✓</span> פגישות פרונטליות ו/או מקוונות</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="why">
+  <div class="section-head fade-in">
+    <div class="eyebrow" style="display:inline-flex;margin:0 auto 14px;">למה לבחור בטיפול הזה</div>
+    <h2>ליווי שמותאם בדיוק בשבילך</h2>
+    <p>שילוב של שיטה מוכחת, יחס אישי וסביבה בטוחה — כדי שהתהליך הטיפולי באמת יעבוד</p>
+  </div>
+  <div class="highlights">
+    <div class="highlight-card fade-in">
+      <div class="icon">📚</div>
+      <h3>גישה מבוססת מחקר</h3>
+      <p>שיטת CBT מוכחת ויעילה, עם כלים מעשיים ליישום יומיומי</p>
+    </div>
+    <div class="highlight-card fade-in d1">
+      <div class="icon">💜</div>
+      <h3>ליווי אישי ומותאם</h3>
+      <p>כל תהליך טיפולי נבנה סביב הצרכים והקצב שלך</p>
+    </div>
+    <div class="highlight-card fade-in d2">
+      <div class="icon">🤝</div>
+      <h3>סביבה בטוחה ותומכת</h3>
+      <p>מרחב פתוח, ללא שיפוטיות, לצד ליווי אנושי לאורך הדרך</p>
+    </div>
+  </div>
+</section>
+
+<section class="section process" id="process">
+  <div class="section-head fade-in">
+    <div class="eyebrow" style="display:inline-flex;margin:0 auto 14px;">איך זה עובד</div>
+    <h2>שלושה צעדים פשוטים להתחלה</h2>
+    <p>התהליך מתחיל בפנייה קצרה, וממשיך בקצב שנוח לך</p>
+  </div>
+  <div class="steps">
+    <div class="step fade-in">
+      <div class="num">1</div>
+      <h3>יצירת קשר</h3>
+      <p>משאירים פרטים בטופס או פונים ישירות בוואטסאפ</p>
+    </div>
+    <div class="step fade-in d1">
+      <div class="num">2</div>
+      <h3>שיחת היכרות</h3>
+      <p>שיחה קצרה להבין את הצרכים שלך ולתאם פגישה ראשונה</p>
+    </div>
+    <div class="step fade-in d2">
+      <div class="num">3</div>
+      <h3>תחילת התהליך</h3>
+      <p>בניית תהליך טיפולי מותאם אישית, בקצב ובמינון הנכונים לך</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="section-head fade-in">
+    <div class="eyebrow" style="display:inline-flex;margin:0 auto 14px;">שאלות נפוצות</div>
+    <h2>שאלות שכדאי לדעת לפני שמתחילים</h2>
+  </div>
+  <div class="faq-list fade-in">
+    <details class="faq-item" open>
+      <summary>כמה זמן אורך תהליך טיפולי ב-CBT?</summary>
+      <p>אורך התהליך משתנה מאדם לאדם ותלוי במטרות הטיפול. בפגישת הייעוץ הראשונה נבנה יחד ציפיות ומסגרת זמן מתאימה.</p>
+    </details>
+    <details class="faq-item">
+      <summary>האם הפגישות מתקיימות פרונטלית או אונליין?</summary>
+      <p>ניתן לשלב בין השניים בהתאם למה שנוח ומתאים לך.</p>
+    </details>
+    <details class="faq-item">
+      <summary>האם השיחה הראשונה מחייבת בהמשך?</summary>
+      <p>לא. שיחת ההיכרות נועדה להכיר ולבדוק התאמה, ואת/ה מחליט/ה איך להמשיך משם.</p>
+    </details>
+  </div>
+</section>
+
+<section class="section" id="contact">
+  <div class="cta-section fade-in">
+    <h2>מעוניינים בפגישת ייעוץ?</h2>
+    <p>השאירו פרטים ותקבלו חזרה בהקדם, או פנו ישירות בוואטסאפ</p>
+
+    <div class="cta-panel">
+      <form action="https://formsubmit.co/iditshalechet@gmail.com" method="POST" id="leadForm">
+        <input type="hidden" name="_subject" value="פנייה חדשה מדף הנחיתה - טיפול CBT">
+        <input type="hidden" name="_captcha" value="false">
+        <input type="hidden" name="_template" value="table">
+        <input type="text" name="שם מלא" placeholder="שם מלא" required>
+        <input type="tel" name="טלפון" placeholder="מספר טלפון" required>
+        <button type="submit" class="submit-btn">שלחו לי חזרה</button>
+      </form>
+
+      <div class="divider">או</div>
+
+      <a class="whatsapp-btn" href="https://wa.me/972546634113?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A9%D7%9E%D7%97%20%D7%9C%D7%A9%D7%9E%D7%95%D7%A2%20%D7%A2%D7%9C%20%D7%90%D7%A4%D7%A9%D7%A8%D7%95%D7%AA%20%D7%9C%D7%98%D7%99%D7%A4%D7%95%D7%9C" target="_blank" rel="noopener">
+        💬 שליחת הודעה בוואטסאפ
+      </a>
+    </div>
+  </div>
+</section>
+
+<a class="float-whatsapp" href="https://wa.me/972546634113" target="_blank" rel="noopener" aria-label="וואטסאפ">💬</a>
+
+<footer>
+  © 2026 טיפול CBT — כל הזכויות שמורות
+</footer>
+
+</body>
+</html>
