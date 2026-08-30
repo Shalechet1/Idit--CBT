@@ -17,7 +17,6 @@
       This page requires JavaScript to display.
     </div>
   </noscript>
-  <style>image-slot::part(image){touch-action:auto !important;}</style>
 </head>
 <body>
   <div id="__bundler_thumbnail">
@@ -369,6 +368,20 @@ document.addEventListener('DOMContentLoaded', async function() {
     if (window.Babel && typeof window.Babel.transformScriptTags === 'function') {
       window.Babel.transformScriptTags();
     }
+        // Fix: allow native touch-scroll over <image-slot> images on read-only
+    // pages. The component's internal stylesheet sets touch-action:none on
+    // its <img> unconditionally (only needed for drag/reframe in edit mode),
+    // which blocks mobile scroll for a finger placed on the photo.
+    function fixImageSlotTouchAction(root) {
+      root.querySelectorAll('image-slot').forEach(function(el) {
+        if (!el.shadowRoot) return;
+        var img = el.shadowRoot.querySelector('.frame img');
+        if (img) img.style.setProperty('touch-action', 'auto', 'important');
+      });
+    }
+    fixImageSlotTouchAction(document);
+    new MutationObserver(function() { fixImageSlotTouchAction(document); })
+      .observe(document.documentElement, { childList: true, subtree: true });
   } catch (err) {
     setStatus('Error unpacking: ' + err.message);
     console.error('Bundle unpack error:', err);
