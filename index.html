@@ -368,6 +368,22 @@ document.addEventListener('DOMContentLoaded', async function() {
     if (window.Babel && typeof window.Babel.transformScriptTags === 'function') {
       window.Babel.transformScriptTags();
     }
+     // --- fix: allow native scroll on touch over hero/about images ---
+    function fixImageSlotTouchAction() {
+      document.querySelectorAll('image-slot').forEach(function (el) {
+        if (!el.shadowRoot) return;
+        el.shadowRoot.querySelectorAll('.frame img').forEach(function (img) {
+          if (!el.hasAttribute('data-editable')) {
+            img.style.setProperty('touch-action', 'auto', 'important');
+          }
+        });
+      });
+    }
+    fixImageSlotTouchAction();
+    new MutationObserver(fixImageSlotTouchAction).observe(document.documentElement, {
+      childList: true, subtree: true, attributes: true
+    });
+    // --- end fix ---
   } catch (err) {
     setStatus('Error unpacking: ' + err.message);
     console.error('Bundle unpack error:', err);
