@@ -365,9 +365,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
     // Babel standalone auto-transforms type=text/babel on DOMContentLoaded,
     // which fired before we swapped the document. Trigger manually if present.
-    if (window.Babel && typeof window.Babel.transformScriptTags === 'function') {
+        if (window.Babel && typeof window.Babel.transformScriptTags === 'function') {
       window.Babel.transformScriptTags();
-            window.Babel.transformScriptTags();
     }
 
     // --- fix 1: allow native scroll on touch over hero/about portrait images ---
@@ -386,48 +385,60 @@ document.addEventListener('DOMContentLoaded', async function() {
       childList: true, subtree: true, attributes: true
     });
 
- // --- fix 3: any "contact" button leads straight to WhatsApp ---
-function redirectContactButtonsToWhatsApp() {
-  var waNumber = '972546634113';
-  var waUrl = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent('היי, אשמח לתאם שיחת היכרות');
+    // --- fix 2+3: וואטסאפ בלבד, בלי כפילויות ---
+    function simplifyContactToWhatsAppOnly() {
+      document.querySelectorAll('form').forEach(function (form) {
+        if (form.__hiddenForWa) return;
+        if (!form.querySelector('input[type="tel"]')) return;
+        form.__hiddenForWa = true;
+        var divider = form.nextElementSibling;
+        form.style.display = 'none';
+        if (divider) divider.style.display = 'none';
+      });
 
-  var candidates = document.querySelectorAll('a, button');
-  candidates.forEach(function (el) {
-    if (el.__waRedirected) return;
-    var text = (el.textContent || '').trim();
-    var href = el.getAttribute('href') || '';
+      document.querySelectorAll('p, div, span').forEach(function (el) {
+        if (el.__waTextFixed || el.children.length) return;
+        if (el.textContent && el.textContent.indexOf('השאירו פרטים') !== -1) {
+          el.__waTextFixed = true;
+          el.textContent = 'פנו אליי ישירות בוואטסאפ לתיאום שיחת היכרות.';
+        }
+      });
 
-    var looksLikeContact =
-      href.indexOf('#contact') !== -1 ||
-      text.indexOf('צור קשר') !== -1 ||
-      text.indexOf('צרו קשר') !== -1 ||
-      text.indexOf('קביעת פגישה') !== -1 ||
-      text.indexOf('קביעת פגישת ייעוץ') !== -1 ||
-      text.indexOf('שלחו לי חזרה') !== -1;
+      document.querySelectorAll('a, button').forEach(function (el) {
+        if (el.__waHandled) return;
+        var text = (el.textContent || '').trim();
+        var href = el.getAttribute('href') || '';
+        if (href.indexOf('wa.me') !== -1) { el.__waHandled = true; return; }
 
-    // לא נוגעים בכפתור שכבר מוביל לוואטסאפ בעצמו
-    if (href.indexOf('wa.me') !== -1) return;
+        if (text === 'קביעת פגישת ייעוץ' || text === 'שלחו לי חזרה') {
+          el.__waHandled = true;
+          el.style.display = 'none';
+          return;
+        }
 
-    if (looksLikeContact) {
-      el.__waRedirected = true;
-      if (el.tagName === 'A') {
-        el.setAttribute('href', waUrl);
-        el.setAttribute('target', '_blank');
-        el.setAttribute('rel', 'noopener noreferrer');
-      } else {
-        el.addEventListener('click', function (e) {
-          e.preventDefault();
-          window.open(waUrl, '_blank');
-        });
-      }
+        if (text.indexOf('צור קשר') !== -1 || text.indexOf('צרו קשר') !== -1) {
+          el.__waHandled = true;
+          var waNumber = '972546634113';
+          var waUrl = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent('היי, אשמח לתאם שיחת היכרות');
+          if (el.tagName === 'A') {
+            el.setAttribute('href', waUrl);
+            el.setAttribute('target', '_blank');
+            el.setAttribute('rel', 'noopener noreferrer');
+          } else {
+            el.addEventListener('click', function (e) {
+              e.preventDefault();
+              window.open(waUrl, '_blank');
+            });
+          }
+        }
+      });
     }
-  });
-}
-redirectContactButtonsToWhatsApp();
-new MutationObserver(redirectContactButtonsToWhatsApp).observe(document.documentElement, {
-  childList: true, subtree: true
-});
-// --- end fixes ---
+    simplifyContactToWhatsAppOnly();
+    new MutationObserver(simplifyContactToWhatsAppOnly).observe(document.documentElement, {
+      childList: true, subtree: true
+    });
+    // --- end fixes ---
+  } catch (err) {
     }
   } catch (err) {
     setStatus('Error unpacking: ' + err.message);
