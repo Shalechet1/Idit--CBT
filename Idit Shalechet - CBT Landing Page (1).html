@@ -367,6 +367,40 @@ document.addEventListener('DOMContentLoaded', async function() {
     // which fired before we swapped the document. Trigger manually if present.
     if (window.Babel && typeof window.Babel.transformScriptTags === 'function') {
       window.Babel.transformScriptTags();
+            window.Babel.transformScriptTags();
+    }
+
+    // --- fix 1: allow native scroll on touch over hero/about portrait images ---
+    function fixImageSlotTouchAction() {
+      document.querySelectorAll('image-slot').forEach(function (el) {
+        if (!el.shadowRoot) return;
+        el.shadowRoot.querySelectorAll('.frame img').forEach(function (img) {
+          if (!el.hasAttribute('data-editable')) {
+            img.style.setProperty('touch-action', 'auto', 'important');
+          }
+        });
+      });
+    }
+    fixImageSlotTouchAction();
+    new MutationObserver(fixImageSlotTouchAction).observe(document.documentElement, {
+      childList: true, subtree: true, attributes: true
+    });
+
+    // --- fix 2: contact section = WhatsApp only (hide the email form + "or" divider) ---
+    function simplifyContactToWhatsAppOnly() {
+      var form = document.querySelector('form[action*="formsubmit.co"]');
+      if (!form || form.__hiddenForWa) return;
+      form.__hiddenForWa = true;
+      var divider = form.nextElementSibling; // the "או" divider between form and WhatsApp button
+      form.style.display = 'none';
+      if (divider) divider.style.display = 'none';
+    }
+    simplifyContactToWhatsAppOnly();
+    new MutationObserver(simplifyContactToWhatsAppOnly).observe(document.documentElement, {
+      childList: true, subtree: true
+    });
+    // --- end fixes ---
+  } catch (err) {
     }
   } catch (err) {
     setStatus('Error unpacking: ' + err.message);
