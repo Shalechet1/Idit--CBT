@@ -386,21 +386,48 @@ document.addEventListener('DOMContentLoaded', async function() {
       childList: true, subtree: true, attributes: true
     });
 
-    // --- fix 2: contact section = WhatsApp only (hide the email form + "or" divider) ---
-    function simplifyContactToWhatsAppOnly() {
-      var form = document.querySelector('form[action*="formsubmit.co"]');
-      if (!form || form.__hiddenForWa) return;
-      form.__hiddenForWa = true;
-      var divider = form.nextElementSibling; // the "או" divider between form and WhatsApp button
-      form.style.display = 'none';
-      if (divider) divider.style.display = 'none';
+ // --- fix 3: any "contact" button leads straight to WhatsApp ---
+function redirectContactButtonsToWhatsApp() {
+  var waNumber = '972546634113';
+  var waUrl = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent('היי, אשמח לתאם שיחת היכרות');
+
+  var candidates = document.querySelectorAll('a, button');
+  candidates.forEach(function (el) {
+    if (el.__waRedirected) return;
+    var text = (el.textContent || '').trim();
+    var href = el.getAttribute('href') || '';
+
+    var looksLikeContact =
+      href.indexOf('#contact') !== -1 ||
+      text.indexOf('צור קשר') !== -1 ||
+      text.indexOf('צרו קשר') !== -1 ||
+      text.indexOf('קביעת פגישה') !== -1 ||
+      text.indexOf('קביעת פגישת ייעוץ') !== -1 ||
+      text.indexOf('שלחו לי חזרה') !== -1;
+
+    // לא נוגעים בכפתור שכבר מוביל לוואטסאפ בעצמו
+    if (href.indexOf('wa.me') !== -1) return;
+
+    if (looksLikeContact) {
+      el.__waRedirected = true;
+      if (el.tagName === 'A') {
+        el.setAttribute('href', waUrl);
+        el.setAttribute('target', '_blank');
+        el.setAttribute('rel', 'noopener noreferrer');
+      } else {
+        el.addEventListener('click', function (e) {
+          e.preventDefault();
+          window.open(waUrl, '_blank');
+        });
+      }
     }
-    simplifyContactToWhatsAppOnly();
-    new MutationObserver(simplifyContactToWhatsAppOnly).observe(document.documentElement, {
-      childList: true, subtree: true
-    });
-    // --- end fixes ---
-  } catch (err) {
+  });
+}
+redirectContactButtonsToWhatsApp();
+new MutationObserver(redirectContactButtonsToWhatsApp).observe(document.documentElement, {
+  childList: true, subtree: true
+});
+// --- end fixes ---
     }
   } catch (err) {
     setStatus('Error unpacking: ' + err.message);
